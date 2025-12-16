@@ -570,63 +570,163 @@
       .coin { width: 40px; height: 40px; font-size: 1.2rem; }
     }
 
-    /* Grilles La Livrée d'Hermès */
-    .grilles-section {
-      margin: 20px 0;
-      padding: 20px;
-      background: var(--bg-card);
-      border-radius: 15px;
-      border: 1px solid rgba(212, 175, 55, 0.2);
-    }
-    
-    .grilles-title {
-      font-family: 'Cinzel', serif;
-      color: var(--gold);
-      text-align: center;
-      margin-bottom: 15px;
-      font-size: 1.1rem;
-      letter-spacing: 0.1em;
-    }
-    
-    .grilles-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-    }
-    
-    .grille-img {
-      width: 100%;
-      max-width: 300px;
-      height: auto;
-      border-radius: 5px;
-      transition: transform 0.3s ease;
-    }
-    
-    .grille-img:hover {
-      transform: scale(1.05);
-    }
-    
-    .grilles-wrapper {
+    /* Grilles La Livrée d'Hermès - Superposées et animées */
+    .tirage-content {
       display: flex;
       gap: 30px;
       justify-content: center;
-      flex-wrap: wrap;
       align-items: flex-start;
+      flex-wrap: wrap;
+    }
+    
+    .grilles-stack {
+      position: relative;
+      width: 280px;
+      height: 280px;
+      margin: 20px auto;
+    }
+    
+    .grille-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      transform: scale(0.8) translateY(-20px);
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      pointer-events: none;
+    }
+    
+    .grille-layer.visible {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+      pointer-events: auto;
+    }
+    
+    .grille-layer img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      filter: drop-shadow(0 4px 15px rgba(212, 175, 55, 0.2));
+    }
+    
+    .grille-layer.mutant img {
+      filter: drop-shadow(0 4px 20px rgba(123, 45, 142, 0.4));
+      animation: grille-pulse 2s ease-in-out infinite;
+    }
+    
+    @keyframes grille-pulse {
+      0%, 100% { filter: drop-shadow(0 4px 20px rgba(123, 45, 142, 0.4)); }
+      50% { filter: drop-shadow(0 4px 30px rgba(123, 45, 142, 0.7)); }
+    }
+    
+    @keyframes grille-appear {
+      0% {
+        opacity: 0;
+        transform: scale(1.2) translateY(-30px);
+        filter: brightness(2);
+      }
+      50% {
+        filter: brightness(1.5);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+        filter: brightness(1);
+      }
+    }
+    
+    .grille-layer.animate-in {
+      animation: grille-appear 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+    
+    .grilles-results {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin: 30px 0;
     }
     
     .grilles-hexagram {
       text-align: center;
     }
     
-    .grilles-hexagram-label {
+    .grilles-hexagram-title {
       font-family: 'Cinzel', serif;
       color: var(--gold);
       margin-bottom: 10px;
       font-size: 0.9rem;
+      letter-spacing: 0.05em;
     }
     
-    .mutation-grilles-arrow {
+    .grilles-hexagram-title.mutation {
+      color: var(--mutation);
+    }
+    
+    .grilles-stack-small {
+      position: relative;
+      width: 200px;
+      height: 200px;
+    }
+    
+    .grilles-stack-small .grille-layer {
+      opacity: 1;
+      transform: none;
+    }
+    
+    .grilles-stack-small .grille-layer img {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .mutation-arrow-grilles {
+      font-size: 2.5rem;
+      color: var(--mutation);
+      align-self: center;
+      animation: arrow-pulse 1.5s ease-in-out infinite;
+    }
+    
+    @keyframes arrow-pulse {
+      0%, 100% { opacity: 0.7; transform: translateX(0); }
+      50% { opacity: 1; transform: translateX(5px); }
+    }
+    
+    @media (max-width: 600px) {
+      .grilles-stack {
+        width: 240px;
+        height: 240px;
+      }
+      .grilles-stack-small {
+        width: 160px;
+        height: 160px;
+      }
+      .grilles-results {
+        flex-direction: column;
+        align-items: center;
+      }
+      .mutation-arrow-grilles {
+        transform: rotate(90deg);
+      }
+    }
+    
+    .grilles-section {
+      margin: 20px 0;
+      text-align: center;
+    }
+    
+    .grilles-title {
+      font-family: 'Cinzel', serif;
+      color: var(--gold);
+      margin-bottom: 15px;
+      font-size: 1rem;
+      letter-spacing: 0.1em;
+      opacity: 0.8;
+    }
+    
+    .placeholder-grilles {
       font-size: 2rem;
       color: var(--mutation);
       margin: 20px 0;
@@ -666,13 +766,27 @@
     </div>
     
     <div class="tirage-section">
-      <div class="traits-display" id="traits-display">
-        <div class="trait"><span class="trait-num">6</span><div class="trait-line empty" id="trait-6"></div><span class="trait-value" id="val-6">—</span></div>
-        <div class="trait"><span class="trait-num">5</span><div class="trait-line empty" id="trait-5"></div><span class="trait-value" id="val-5">—</span></div>
-        <div class="trait"><span class="trait-num">4</span><div class="trait-line empty" id="trait-4"></div><span class="trait-value" id="val-4">—</span></div>
-        <div class="trait"><span class="trait-num">3</span><div class="trait-line empty" id="trait-3"></div><span class="trait-value" id="val-3">—</span></div>
-        <div class="trait"><span class="trait-num">2</span><div class="trait-line empty" id="trait-2"></div><span class="trait-value" id="val-2">—</span></div>
-        <div class="trait"><span class="trait-num">1</span><div class="trait-line empty" id="trait-1"></div><span class="trait-value" id="val-1">—</span></div>
+      <div class="tirage-content">
+        <div class="traits-display" id="traits-display">
+          <div class="trait"><span class="trait-num">6</span><div class="trait-line empty" id="trait-6"></div><span class="trait-value" id="val-6">—</span></div>
+          <div class="trait"><span class="trait-num">5</span><div class="trait-line empty" id="trait-5"></div><span class="trait-value" id="val-5">—</span></div>
+          <div class="trait"><span class="trait-num">4</span><div class="trait-line empty" id="trait-4"></div><span class="trait-value" id="val-4">—</span></div>
+          <div class="trait"><span class="trait-num">3</span><div class="trait-line empty" id="trait-3"></div><span class="trait-value" id="val-3">—</span></div>
+          <div class="trait"><span class="trait-num">2</span><div class="trait-line empty" id="trait-2"></div><span class="trait-value" id="val-2">—</span></div>
+          <div class="trait"><span class="trait-num">1</span><div class="trait-line empty" id="trait-1"></div><span class="trait-value" id="val-1">—</span></div>
+        </div>
+        
+        <div class="grilles-section" id="grilles-tirage">
+          <div class="grilles-title">La Livrée d'Hermès</div>
+          <div class="grilles-stack" id="grilles-stack">
+            <div class="grille-layer" id="grille-1" style="z-index: 1;"></div>
+            <div class="grille-layer" id="grille-2" style="z-index: 2;"></div>
+            <div class="grille-layer" id="grille-3" style="z-index: 3;"></div>
+            <div class="grille-layer" id="grille-4" style="z-index: 4;"></div>
+            <div class="grille-layer" id="grille-5" style="z-index: 5;"></div>
+            <div class="grille-layer" id="grille-6" style="z-index: 6;"></div>
+          </div>
+        </div>
       </div>
       
       <div class="coins-container" id="coins-container">
@@ -688,21 +802,13 @@
       <!-- Résultats injectés ici -->
     </div>
     
-
-    <div class="grilles-section" id="grilles-section" style="display: none;">
-      <h3 class="grilles-title">Grilles - La Livrée d'Hermès</h3>
-      <div class="grilles-wrapper" id="grilles-wrapper">
-        <!-- Grilles générées dynamiquement -->
-      </div>
-    </div>
-
     <div class="history-section" id="history-section">
       <h3 class="history-title" id="history-title">Historique des tirages</h3>
       <div id="history-list"></div>
     </div>
     
     <footer>
-      <p>Oracle Yi Jing v2.3</p>
+      <p>Oracle Yi Jing v2.5</p>
       <p>© 2025 <a href="https://cybermind.fr" target="_blank">CyberMind.FR</a></p>
       <p>La Livrée d'Hermès</p>
     </footer>
@@ -960,10 +1066,13 @@ function startTirage() {
   resultsSection.innerHTML = '';
   
   // Reset affichage traits et grilles
-  document.getElementById('grilles-section').style.display = 'none';
   for (let i = 1; i <= 6; i++) {
     document.getElementById(`trait-${i}`).className = 'trait-line empty';
     document.getElementById(`val-${i}`).textContent = '—';
+    // Reset grilles
+    const grilleEl = document.getElementById(`grille-${i}`);
+    grilleEl.className = 'grille-layer';
+    grilleEl.innerHTML = '';
   }
   
   btnTirage.disabled = true;
@@ -1013,18 +1122,36 @@ function lancerTrait() {
 function updateTraitDisplay(num, value) {
   const traitEl = document.getElementById(`trait-${num}`);
   const valEl = document.getElementById(`val-${num}`);
+  const grilleEl = document.getElementById(`grille-${num}`);
   
   valEl.textContent = value;
   
   // 6 = vieux yin (mutation), 7 = jeune yang, 8 = jeune yin, 9 = vieux yang (mutation)
+  let grilleName;
   if (value === 6) {
     traitEl.className = 'trait-line yin-mut';
+    grilleName = `YING-MUT-${num}`;
+    grilleEl.classList.add('mutant');
   } else if (value === 7) {
     traitEl.className = 'trait-line yang';
+    grilleName = `YANG-${num}`;
   } else if (value === 8) {
     traitEl.className = 'trait-line yin';
+    grilleName = `YING-${num}`;
   } else if (value === 9) {
     traitEl.className = 'trait-line yang-mut';
+    grilleName = `YANG-MUT-${num}`;
+    grilleEl.classList.add('mutant');
+  }
+  
+  // Afficher la grille avec animation
+  if (GRILLES[grilleName]) {
+    grilleEl.innerHTML = `<img src="${GRILLES[grilleName]}" alt="Trait ${num}">`;
+    grilleEl.classList.add('animate-in');
+    setTimeout(() => {
+      grilleEl.classList.add('visible');
+      grilleEl.classList.remove('animate-in');
+    }, 800);
   }
 }
 
@@ -1096,59 +1223,63 @@ function calculateHexagram(traits) {
 }
 
 
-// Fonction pour générer l'affichage des grilles
-function generateGrillesHTML(traits, hexNum, isMutation = false) {
-  const prefix = isMutation ? 'mutation-' : '';
-  let html = `<div class="grilles-hexagram">`;
-  html += `<div class="grilles-hexagram-label">${isMutation ? 'Mutation → ' : ''}Hexagramme ${hexNum}</div>`;
-  html += `<div class="grilles-container">`;
-  
-  // Afficher les traits de 6 à 1 (haut en bas)
-  for (let i = 6; i >= 1; i--) {
-    const traitVal = traits[i - 1];
+// Fonction pour créer une stack de grilles pour un hexagramme
+function createGrillesStack(traitsArray, isMutation = false) {
+  let html = `<div class="grilles-stack-small">`;
+  for (let i = 1; i <= 6; i++) {
+    const value = traitsArray[i - 1];
     let grilleName;
+    let mutantClass = '';
     
     if (isMutation) {
-      // Pour la mutation, utiliser les traits transformés (sans indication mutation)
-      const isYang = (traitVal === 7 || traitVal === 9); // Yang avant transformation
-      grilleName = isYang ? `YANG-${i}` : `YING-${i}`;
+      // Pour mutation, on affiche les traits transformés
+      grilleName = (value === 7 || value === 9) ? `YANG-${i}` : `YING-${i}`;
     } else {
-      // Hexagramme principal
-      const isMutant = (traitVal === 6 || traitVal === 9);
-      if (traitVal === 6) { // Vieux Yin (mutation)
+      if (value === 6) {
         grilleName = `YING-MUT-${i}`;
-      } else if (traitVal === 9) { // Vieux Yang (mutation)
+        mutantClass = ' mutant';
+      } else if (value === 9) {
         grilleName = `YANG-MUT-${i}`;
-      } else if (traitVal === 7) { // Jeune Yang
+        mutantClass = ' mutant';
+      } else if (value === 7) {
         grilleName = `YANG-${i}`;
-      } else { // traitVal === 8, Jeune Yin
+      } else {
         grilleName = `YING-${i}`;
       }
     }
     
     if (GRILLES[grilleName]) {
-      html += `<img src="${GRILLES[grilleName]}" alt="Trait ${i}" class="grille-img">`;
+      html += `<div class="grille-layer visible${mutantClass}" style="z-index: ${i};"><img src="${GRILLES[grilleName]}" alt="Trait ${i}"></div>`;
     }
   }
-  
-  html += `</div></div>`;
+  html += `</div>`;
   return html;
 }
 
-// Fonction pour afficher les grilles
-function displayGrilles(traits, hexNum, mutHexNum, mutatedTraits) {
-  const grillesSection = document.getElementById('grilles-section');
-  const grillesWrapper = document.getElementById('grilles-wrapper');
+// Afficher les grilles de résultat (mutation)
+function displayGrillesResults(traits, hexNum, mutHexNum, mutatedTraits) {
+  // Si pas de mutation, on ne montre rien de plus (les grilles sont déjà affichées dans le tirage)
+  if (!mutHexNum) return '';
   
-  let html = generateGrillesHTML(traits, hexNum, false);
+  let html = `<div class="grilles-results">`;
   
-  if (mutHexNum && mutatedTraits) {
-    html += '<div class="mutation-grilles-arrow">⟱</div>';
-    html += generateGrillesHTML(mutatedTraits, mutHexNum, true);
-  }
+  // Hexagramme principal
+  html += `<div class="grilles-hexagram">`;
+  html += `<div class="grilles-hexagram-title">Hexagramme ${hexNum}</div>`;
+  html += createGrillesStack(traits, false);
+  html += `</div>`;
   
-  grillesWrapper.innerHTML = html;
-  grillesSection.style.display = 'block';
+  // Flèche
+  html += `<div class="mutation-arrow-grilles">→</div>`;
+  
+  // Hexagramme de mutation
+  html += `<div class="grilles-hexagram">`;
+  html += `<div class="grilles-hexagram-title mutation">Mutation ${mutHexNum}</div>`;
+  html += createGrillesStack(mutatedTraits, true);
+  html += `</div>`;
+  
+  html += `</div>`;
+  return html;
 }
 
 function displayResults(hexNum, mutHexNum, traits) {
@@ -1228,16 +1359,19 @@ function displayResults(hexNum, mutHexNum, traits) {
     `;
   }
   
-  resultsSection.innerHTML = html;
-  resultsSection.classList.add('visible');
-  
-  // Afficher les grilles La Livrée d'Hermès
+  // Ajouter les grilles de comparaison si mutation
   const mutatedTraitsForGrilles = mutHexNum ? traits.map(t => {
     if (t === 6) return 7;  // Vieux Yin → Jeune Yang
     if (t === 9) return 8;  // Vieux Yang → Jeune Yin
     return t;
   }) : null;
-  displayGrilles(traits, hexNum, mutHexNum, mutatedTraitsForGrilles);
+  
+  if (mutHexNum) {
+    html += displayGrillesResults(traits, hexNum, mutHexNum, mutatedTraitsForGrilles);
+  }
+  
+  resultsSection.innerHTML = html;
+  resultsSection.classList.add('visible');
   
   // Scroll vers résultats
   resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
