@@ -1,4 +1,4 @@
-const CACHE_NAME = 'yijing-oracle-v2.5';
+const CACHE_NAME = 'yijing-oracle-v3.0';
 const urlsToCache = [
   '/',
   '/index.html',
